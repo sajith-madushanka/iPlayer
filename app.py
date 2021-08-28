@@ -1,38 +1,44 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request 
 import numpy as np
 import cv2
 from keras.models import load_model
 import os
 import random
-import subprocess
+from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = './static/songs/'
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
-info = {}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 haarcascade = "haarcascade_frontalface_default.xml"
 label_map = ['Anger', 'Neutral', 'Fear', 'Happy', 'Sad', 'Surprise']
 print("+"*50, "Loading Model File For Analyze........ ")
 model = load_model('model.h5')
 cascade = cv2.CascadeClassifier(haarcascade)
-mp = 'C:/Program Files (x86)/Windows Media Player/wmplayer.exe'
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/home')
+def home():
+    return render_template('index.html')
 
-@app.route('/choose_singer', methods=["POST"])
-def choose_singer():
-    info['language'] = request.form['language']
-    print(info)
-    return render_template('choose_singer.html', data=info['language'])
-
+@app.route('/',methods=['GET','POST'])
+def uploadfile():
+    mood= request.form['mood']
+    lang= request.form['lang']
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], lang+'/'+mood+'/'+filename))
+    return render_template('index.html')
 
 @app.route('/emotion_detect', methods=["POST"])
 def emotion_detect():
-    info['singer'] = request.form['singer']
+    language= request.form['language']
+    print(language)
     found = False
     cap = cv2.VideoCapture(0)
     while not found:
@@ -51,28 +57,17 @@ def emotion_detect():
     print(prediction)
     prediction = np.argmax(prediction)
     prediction = label_map[prediction]
+
     cap.release()
-    link = f"https://www.youtube.com/results?search_query={info['singer']}+{prediction}+{info['language']}+song"
-    # webbrowser.open(link)
-    randomfile = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/songs/"+prediction+"/"))
-    print('You are '+prediction+' !!!! please calm down:) ,I will play song for you :' + randomfile)
-    file = ('F:/gg/ppp/emotion-based-music-ai-main/songs/'+prediction+'/' + randomfile)
-    info['file'] = file
-    falder = prediction
-    files = prediction+'/'+randomfile
-    # subprocess.call([mp, info['file']])
-    return render_template("emotion_detect.html", data=prediction, link=link, file=files)
 
-
-# @app.route('/play', methods=["GET"])
-# def play():
-#     subprocess.call([mp, info['file']])
-#     # response = app.response_class(
-#     # 	response=info['file'],
-#     # 	status=200,
-#     # 	mimetype='application/json'
-#     # )
-#     # return response
+    song1= random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/"+language+"/"+prediction+"/"))
+    song2= random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/"+language+"/"+prediction+"/"))
+    song3= random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/"+language+"/"+prediction+"/"))
+    song4= random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/"+language+"/"+prediction+"/"))
+    song5= random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/"+language+"/"+prediction+"/"))
+    print('You are '+prediction+' !!!! please calm down:) ,I will play song for you :' + song1)
+    
+    return render_template("emotion_detect.html", data=prediction,lang=language, s1=song1, s2=song2, s3=song3, s4=song4, s5=song5)
 
 
 if __name__ == "__main__":

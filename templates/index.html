@@ -1,46 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>music recommend</title>
+	<title>I.B.M Player</title>
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	
 </head>
-<body style="background-color: #edffec;">
-	<div class="header-contain">
-    <header id="header">
-      <nav id="navbar" role="navigation">
-        <ul>
-          <div role="link" tabindex="0">
-            <li>Nature</li>
-          </div>
-          <div role="link" tabindex="0">
-            <li>Water</li>
-          </div>
-          <div role="link" tabindex="0">
-            <li>Abstract</li>
-          </div>
+<body>
+    <nav >
+		<h1>Imotional Based Music Player</h1>
+        <ul style="padding-left: 50%;">
+            <li><a href="{{url_for('home')}}">Home</a></li>
+            <li><a>About</a></li>
+            <li><a>Contact</a></li>
         </ul>
-      </nav>
-    </header>
-  </div>
-	<div class="title">
-		<h1 class="display-4">Select Language</h1>
+    </nav>
+	<div  class="row">
+		<div class="input-container col-md-4">
+			<h4 class="col-md-1">Upload Songs</h4>
+			<form  method="POST" enctype=multipart/form-data>
+				<div class="row">
+					<label><input type="radio" name="mood" value="Happy" checked="true"><div class="box2 col-md-1">Happy</div></label>
+					<label><input type="radio" name="mood" value="Sad"><div class="box2 col-md-1">Sad</div></label>
+				</div>
+				<div class="row">
+					<label><input type="radio" name="mood" value="Anger"><div class="box2 col-md-1">Anger</div></label>
+					<label><input type="radio" name="mood" value="Fear"><div class="box2 col-md-1">Fear</div></label>
+				</div>
+				<div class="row">
+					<label><input type="radio" name="mood" value="Surprise"><div class="box2 col-md-1">Surprise</div></label>
+					<label><input type="radio" name="mood" value="Neutral"><div class="box2 col-md-1">Neutral</div></label>
+				</div>
+				<input type="file" name="file" style="padding: 10px 0 0 20px;">
+				<div class="row sbtn2">
+					<div class="col-md-2" style="padding-top: 5px;">
+						<select id="lang" name="lang">
+							<option value="sinhala">සිංහල</option>
+							<option value="english">english</option>
+							<option value="tamil">Tamil</option>
+							<option value="hindi">Hindi</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button type="submit" class="button button2 " style="vertical-align:middle"><span>Upload</span></button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="lang-container col-md-6">
+			<div class="title">
+				<h3 >Select Language</h3>
+			</div>
+			<form action="{{url_for('emotion_detect')}}" method="POST">
+				<div class="row">
+					<label><input type="radio" name="language" value="sinhala" checked="true"><div class="box col-md-2">සිංහල</div></label>
+					<label><input type="radio" name="language" value="english"><div class="box col-md-2">English</div></label>
+				</div>
+				<div class="row">
+					<label><input type="radio" name="language" value="tamil"><div class="box col-md-2">Tamil</div></label>
+					<label><input type="radio" name="language" value="hindi"><div class="box col-md-2">Hindi</div></label>
+				</div>
+				<div class="row sbtn">
+					<button type="submit" class="button" style="vertical-align:middle"><span>Play Song For My Mood</span></button>
+				</div>
+			</form>
+		</div>
 	</div>
+	<script >
 
-	<form action="{{url_for('choose_singer')}}" method="POST">
-		<label><input type="radio" name="language" value="punjabi" checked="true"><div class="box">punjabi</div></label>
-		<label><input type="radio" name="language" value="english"><div class="box">english</div></label>
-		<br>
-		<label><input type="radio" name="language" value="hindi"><div class="box">hindi</div></label>
-		<label><input type="radio" name="language" value="western"><div class="box">western</div></label>
-
-		<br>
-		<input type="submit" name="btn" value="next" class="btn btn-outline-success btn-lg">
-
-	</form>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-
+	</script>
 </body>
 </html>
