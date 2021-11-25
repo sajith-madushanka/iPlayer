@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request 
+from flask import Flask, render_template, request ,redirect
 import numpy as np
 import cv2
 from keras.models import load_model
@@ -27,17 +27,7 @@ def index():
 def home():
     return render_template('index.html')
 
-# @app.route('/',methods=['GET','POST'])
-# def uploadfile():
-#     mood= request.form['mood']
-#     lang= request.form['lang']
-#     file = request.files['file']
-#     filename = secure_filename(file.filename)
-#     name = filename[:-4]
-#     file.save(os.path.join(app.config['UPLOAD_FOLDER'], name+'.'+lang+'.'+mood+'.mp3'))
-#     return render_template('index.html')
-
-@app.route('/emotion_detect', methods=["POST"])
+@app.route('/emotion_detect', methods=['POST'])
 def emotion_detect():
     type= request.form['type']
     found = False
@@ -60,26 +50,14 @@ def emotion_detect():
 
     cap.release()
     i=1
-    if prediction != 'Neutral':
-        song1 = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/" + language + "/" + prediction + "/"))
-    # for file in os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/"):
-    #     if i==6:
-    #         break
-    #     if fnmatch.fnmatch(file, '*.'+language+'.'+prediction+'.mp3'):
-    #         if i==1:
-    #             song1= file
-    #         if i==2:
-    #             song2= file
-    #         if i==3:
-    #             song3= file
-    #         if i==4:
-    #             song4= file
-    #         if i==5:
-    #             song5= file
-    #         i+=1
+    if prediction == 'Neutral' or prediction == 'Happy':
+        print(prediction)
+        return render_template('index.html',data='You Are In Neutral Mood')
         
-    return render_template("emotion_detect.html", data=prediction,lang=language, s1=song1, s2=song2, s3=song3, s4=song4, s5=song5)
-
+    else:
+        song1 = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/" +type+ "/"))
+        return render_template("emotion_detect.html", data=prediction,type=type, song=song1)
+        
 
 if __name__ == "__main__":
     app.run(debug=True)

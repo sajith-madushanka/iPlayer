@@ -31,7 +31,8 @@
 					<label><input type="radio" name="mood" value="Neutral"><div class="box2 col-md-1">Neutral</div></label>
 				</div>
 				<div class="row sbtn2">
-					<h4 class="col-md-4" style="padding-left:70px;padding-top:15px">Music Can Change Our Mood
+					<h4 class="col-md-4" style="padding-left:70px;padding-top:15px">
+						{% if data %}{{data}}{% else %}Music Can Change Our Mood{% endif %}
 					</h4>
 				</div>
 			</form>
