@@ -14,13 +14,13 @@
             <li><a>Contact</a></li>
         </ul>
     </nav>
-	<div  class="row">
+	<div  class="row" >
 		<div class="input-container col-md-4">
 			<h3>Your Imotion Is Analyzed </h3>
 			<img src="{{url_for('static', filename='face.jpg')}}">
 			<div class="predict">You look like {{data}}</div>
 		</div>
-		<div class="lang-container col-md-6">
+		<div class="lang-container col-md-6" id="player">
 			<div class="title">
 				<h3 >We change your {{data}} mood</h3>
 			</div>
@@ -29,11 +29,31 @@
 						{{song}}
 					</div>
 					<div class="col-md-2 music">
-						<audio autoplay controls style="background-color: blue;">
+						<audio id="audio" controls style="background-color: blue;">
 							<source src="{{url_for('static', filename='songs/'+type+'/'+song)}}" type="audio/mpeg">
 						</audio>
 					</div>
 				</div>
+		</div>
+		<div class="lang-container col-md-6" id="popup" >
+			<div class="title" style="text-align: center;">
+				<h3 >You are nutralized</h3>
+			</div>
+			<div class="row popup_row" style="padding-top: 30px;text-align: center;">
+				<div class="col-md-4">
+					<div class="row" style="padding-left: 85px">
+						Do You Need To Continue?
+					</div>
+					<div class="row " style="padding-top: 30px;" > 
+						<div class="col-md-1" style="padding:0px 0px;">
+							<button onclick="Continue()" class=" button button_2" style="vertical-align:middle;padding-left: 0px;"><span>Yes</span></button>
+						</div>
+						<div class="col-md-1">
+							<a href="{{url_for('home')}}"><button class=" button button_2" style="vertical-align:middle"><span>No</span></button></a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<form action="{{url_for('emotion_detect')}}" id="frm" method="POST" hidden>
 				<label><input type="radio" name="type" value="{{type}}" checked="true"><div class="box col-md-2">Healing Music</div></label>
@@ -44,8 +64,25 @@
 			const form  = document.getElementById('frm');
 			form.submit();
 		}
+		if('{{popup}}'=='True'){
+			const player  = document.getElementById('player');
+			player.classList.add("make_hidden");
+		}
+		else{
+			const pop  = document.getElementById('popup');
+			pop.classList.add("make_hidden");
+			document.getElementById('audio').autoplay = true;
+			setTimeout(PlayAgain, 60000);
+		}
+		function Continue() {
+			const player  = document.getElementById('player');
+			player.classList.remove("make_hidden");
+			const pop  = document.getElementById('popup');
+			pop.classList.add("make_hidden");
+			document.getElementById('audio').play();
+			setTimeout(PlayAgain, 60000);
 
-		setTimeout(PlayAgain, 5000);
+		}
 	</script>
 </body>
 </html>

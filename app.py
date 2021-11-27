@@ -49,14 +49,13 @@ def emotion_detect():
     prediction = label_map[prediction]
 
     cap.release()
-    i=1
+    song1 = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/" +type+ "/"))
     if prediction == 'Neutral' or prediction == 'Happy':
-        print(prediction)
-        return render_template('index.html',data='You Are In Neutral Mood')
-        
+        popup = True
     else:
-        song1 = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/" +type+ "/"))
-        return render_template("emotion_detect.html", data=prediction,type=type, song=song1)
+        popup = False
+
+    return render_template("emotion_detect.html", data=prediction,type=type, song=song1,popup=popup)
         
 
 if __name__ == "__main__":

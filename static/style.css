@@ -261,3 +261,34 @@ select {
 	background-color: #f1f1f1;
 	height: 48px;
   }
+  .button_2 {
+	font-size: 19px !important;
+	width: 124px  !important;
+	height: 61px  !important;
+	padding-left:16px  !important ;
+	padding-top:13px  !important;
+  }
+  .popup_row{
+	margin:80px 150px;
+	background-color: white;
+	height:200px;
+	width:369px;
+	max-width: 369px;
+	box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+	border-radius: 10px;
+	display: inline-block;
+}
+
+.make_hidden{
+	display: none;
+}
+
+body {
+	-ms-overflow-style: none; /* for Internet Explorer, Edge */
+	scrollbar-width: none; /* for Firefox */
+	overflow-y: scroll; 
+  }
+  
+  body::-webkit-scrollbar {
+	display: none; /* for Chrome, Safari, and Opera */
+  }
