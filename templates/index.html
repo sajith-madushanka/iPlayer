@@ -15,40 +15,16 @@
         </ul>
     </nav>
 	<div  class="row">
-		<div class="input-container col-md-4">
-			<h4 class="col-md-1">We can be In</h4>
-			<form>
-				<div class="row">
-					<label><input type="radio" name="mood" value="Happy" checked="true"><div class="box2 col-md-1">Happy</div></label>
-					<label><input type="radio" name="mood" value="Sad"><div class="box2 col-md-1">Sad</div></label>
-				</div>
-				<div class="row">
-					<label><input type="radio" name="mood" value="Anger"><div class="box2 col-md-1">Anger</div></label>
-					<label><input type="radio" name="mood" value="Fear"><div class="box2 col-md-1">Fear</div></label>
-				</div>
-				<div class="row">
-					<label><input type="radio" name="mood" value="Surprise"><div class="box2 col-md-1">Surprise</div></label>
-					<label><input type="radio" name="mood" value="Neutral"><div class="box2 col-md-1">Neutral</div></label>
-				</div>
-				<div class="row sbtn2">
-					<h4 class="col-md-4" style="padding-left:70px;padding-top:15px">
-						{% if data %}{{data}}{% else %}Music Can Change Our Mood{% endif %}
-					</h4>
-				</div>
-			</form>
-		</div>
-		<div class="lang-container col-md-6">
+		o<div class="lang-container col-md-12">
 			<div class="title">
 				<h3 >Select Preferred Music</h3>
+				<h3 >{% if data %}{{data}}{% endif %}</h3>
 			</div>
 			<form action="{{url_for('emotion_detect')}}" method="POST">
 				<div class="row">
 					<label><input type="radio" name="type" value="healing" checked="true"><div class="box col-md-2">Healing Music</div></label>
 					<label><input type="radio" name="type" value="nature"><div class="box col-md-2">Nature Sounds</div></label>
-				</div>
-				<div class="row">
 					<label><input type="radio" name="type" value="songs"><div class="box col-md-2">Songs</div></label>
-<!--					<label><input type="radio" name="type" value="hindi"><div class="box col-md-2">Hindi</div></label>-->
 				</div>
 				<div class="row sbtn">
 					<button type="submit" class="button" style="vertical-align:middle"><span>Want to change my mood</span></button>
