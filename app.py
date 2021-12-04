@@ -6,6 +6,9 @@ from keras.preprocessing.image import img_to_array
 import fnmatch
 import os
 import random
+import time
+
+
 
 
 UPLOAD_FOLDER = './static/'
@@ -31,10 +34,15 @@ def home():
 def emotion_detect():
     type= request.form['type']
     found = False
+    moods = []
+    start = time.time()
     cap = cv2.VideoCapture(0)
     while not found:
+        
+        
         ret, frame = cap.read()
         labels = []
+        end = time.time()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_classifier.detectMultiScale(gray, 1.3, 5)
 
@@ -43,7 +51,7 @@ def emotion_detect():
             roi_gray = gray[y:y + h, x:x + w]
             cv2.imwrite("static/face.jpg", roi_gray)
             roi_gray = cv2.resize(roi_gray, (48, 48), interpolation=cv2.INTER_AREA)
-
+           
             if np.sum([roi_gray]) != 0:
                 roi = roi_gray.astype('float') / 255.0
                 roi = img_to_array(roi)
@@ -53,23 +61,35 @@ def emotion_detect():
 
                 preds = classifier.predict(roi)[0]
                 label = class_labels[preds.argmax()]
-                if label:
+                
+                print("\nprediction = ",end - start)
+                print("\nprediction = ", preds)
+                print("\nlabel = ", label)
+                print("\nprediction max = ", preds.argmax())
+                moods.append(label)
+                print("\nprediction moods = ", moods)
+                if len(moods)> 7:
                     found = True
-                    print("\nprediction = ", preds)
-                    print("\nlabel = ", label)
-                    print("\nprediction max = ", preds.argmax())
-                    
-                    cap.release()
-                    song1 = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/" +type+ "/"))
-                    if label == 'Neutral' or label == 'Happy':
-                        popup = True
+                    label = max(moods, key = moods.count)
+                    if label:
+                        cap.release()
+                        song1 = random.choice(os.listdir("F:/gg/ppp/emotion-based-music-ai-main/static/songs/" +type+ "/"))
+                        if label == 'Neutral' or label == 'Happy':
+                            popup = True
+                        else:
+                            popup = False
+
+                        return render_template("emotion_detect.html", data=label,type=type, song=song1,popup=popup)
                     else:
-                        popup = False
-
-                    return render_template("emotion_detect.html", data=label,type=type, song=song1,popup=popup)
+                        cap.release()
+                        return render_template('index.html',data='No Face Found')
+                
             else:
+                cap.release()
                 return render_template('index.html',data='No Face Found')
-
+        if (end-start)>15:
+                    cap.release()
+                    return render_template('index.html',data='No Face Found')
 
 if __name__ == "__main__":
     app.run(debug=True)
